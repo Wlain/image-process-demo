@@ -12,7 +12,7 @@
 
 Texture::Texture(const char* filename)
 {
-    auto realPath = getAssetDir(filename);
+    const auto realPath = getAssetDir(filename);
     assert(fileExists(realPath.c_str()));
     m_info.data = stbi_load(realPath.c_str(), &m_info.width, &m_info.height, &m_info.channels, 4);
     m_info.stride = m_info.width * 4;
