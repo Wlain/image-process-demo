@@ -44,7 +44,6 @@ int HSVAdjust(unsigned char *srcData, int width, int height, int stride, float h
 int main()
 {
     Texture dog("dog.png");
-    const Texture lut("lookup.png");
     auto& info = dog.getInfo();
     int result = HSVAdjust(info.data, info.width, info.height, info.stride, 180.0, 0.1, 0.1);
     dog.save("dog_hsv.png");
