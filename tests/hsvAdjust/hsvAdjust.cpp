@@ -3,10 +3,10 @@
 //
 
 #include "texture.h"
-#include "RGB2HSV.h"
+#include "rgb2hsv.h"
 #include <iostream>
 
-int HSVAdjust(unsigned char *srcData, int width, int height, int stride, float hIntensity, float sIntensity, float vIntensity)
+int hsvAdjust(unsigned char *srcData, int width, int height, int stride, float hIntensity, float sIntensity, float vIntensity)
 {
     int ret = 0;
     if(srcData == nullptr)
@@ -26,11 +26,11 @@ int HSVAdjust(unsigned char *srcData, int width, int height, int stride, float h
             R = pSrc[0];
             G = pSrc[1];
             B = pSrc[2];
-            RGB2HSV(R, G, B, &h, &s, &v);
+            rgb2hsv(R, G, B, &h, &s, &v);
             h = h + hIntensity > 360 ? h + hIntensity - 360 : h + hIntensity;
             s = std::clamp(s + sIntensity, 0.0f, 1.0f);
             v = std::clamp(v + vIntensity, 0.0f, 1.0f);
-            HSV2RGB(h, s, v, &R, &G, &B);
+            hsv2rgb(h, s, v, &R, &G, &B);
             pSrc[0] = R;
             pSrc[1] = G;
             pSrc[2] = B;
@@ -45,7 +45,7 @@ int main()
 {
     Texture dog("dog.png");
     auto& info = dog.getInfo();
-    int result = HSVAdjust(info.data, info.width, info.height, info.stride, 180.0, 0.1, 0.1);
+    int result = hsvAdjust(info.data, info.width, info.height, info.stride, 180.0, 0.1, 0.1);
     dog.save("dog_hsv.png");
     return 0;
 }

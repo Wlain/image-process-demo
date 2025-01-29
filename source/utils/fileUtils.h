@@ -6,6 +6,7 @@
 #define FILEUTILS_H
 
 #include <string>
+#include <fstream>
 
 std::string getAssetDir(const char* name);
 
