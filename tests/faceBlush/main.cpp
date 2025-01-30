@@ -8,12 +8,12 @@
 
 int main()
 {
-    Texture maskLeft("mask_blush_left.png");
+    const Texture maskLeft("mask_blush_left.png");
     int ratio = 50;
     Texture originTexture("test.png");
-    auto ret = faceBlush(originTexture, srcFacePoints, maskLeft, maskLeftKeyPointsleft, true, ratio);
+    faceBlush(originTexture, srcFacePoints, maskLeft, maskFaceBlushLeftKeyPoints, true, ratio);
     Texture maskRight("mask_blush_right.png");
-    ret = faceBlush(originTexture, srcFacePoints, maskRight, maskLeftKeyPointsright, false, ratio);
-    originTexture.save("test_blush.png");
+    faceBlush(originTexture, srcFacePoints, maskRight, maskFaceBlushRightKeyPoints, false, ratio);
+    originTexture.save("faceBlush.png");
     return 0;
 }
