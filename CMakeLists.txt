@@ -6,6 +6,7 @@ include_directories(
         ${PROJECT_SOURCE_DIR}/source
         ${PROJECT_SOURCE_DIR}/source/utils
         ${PROJECT_SOURCE_DIR}/source/algorithm
+        ${PROJECT_SOURCE_DIR}/source/mockAIData
         ${PROJECT_SOURCE_DIR}/3rdparty/stb
 )
 
@@ -19,6 +20,10 @@ foreach (TEST ${TESTS})
     file(GLOB_RECURSE EXAMPLE_SOURCES ${TEST}/*.cpp)
     file(GLOB_RECURSE EXAMPLE_HEADERS ${TEST}/*.h)
     get_filename_component(PROJECT_NAME ${TEST} NAME)
-    add_executable(${PROJECT_NAME} ${SOURCES} ${EXAMPLE_SOURCES} ${EXAMPLE_HEADERS})
+    add_executable(${PROJECT_NAME} ${SOURCES} ${EXAMPLE_SOURCES} ${EXAMPLE_HEADERS}
+            source/algorithm/steroNose.cpp
+            source/algorithm/steroNose.h
+            source/algorithm/lipsRecolor.cpp
+            source/algorithm/lipsRecolor.h)
 endforeach ()
 

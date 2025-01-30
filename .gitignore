@@ -36,3 +36,6 @@ compiledDependencies/
 cmake-build-*
 build-*
 .idea/
+
+.DS_Store
+tests/.DS_Store

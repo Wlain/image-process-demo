@@ -4,7 +4,8 @@
 
 #ifndef BEAUTYIRIS_H
 #define BEAUTYIRIS_H
+#include "texture.h"
 
-int beautyIris(unsigned char* srcData, int width, int height, int stride, int srcPoints[], unsigned char* maskData, int mWidth, int mHeight, int mStride, int maskPoints[], int ratio);
+void beautyIris(const Texture& originTexture, const int srcPoints[], const Texture& maskTexture, const int maskPoints[], int ratio);
 
-#endif //BEAUTYIRIS_H
+#endif // BEAUTYIRIS_H
