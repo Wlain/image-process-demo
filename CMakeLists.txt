@@ -20,10 +20,6 @@ foreach (TEST ${TESTS})
     file(GLOB_RECURSE EXAMPLE_SOURCES ${TEST}/*.cpp)
     file(GLOB_RECURSE EXAMPLE_HEADERS ${TEST}/*.h)
     get_filename_component(PROJECT_NAME ${TEST} NAME)
-    add_executable(${PROJECT_NAME} ${SOURCES} ${EXAMPLE_SOURCES} ${EXAMPLE_HEADERS}
-            source/algorithm/steroNose.cpp
-            source/algorithm/steroNose.h
-            source/algorithm/lipsRecolor.cpp
-            source/algorithm/lipsRecolor.h)
+    add_executable(${PROJECT_NAME} ${SOURCES} ${EXAMPLE_SOURCES} ${EXAMPLE_HEADERS})
 endforeach ()
 
