@@ -6,77 +6,88 @@
 
 #include <algorithm>
 
+int fastMeanFilter(const Texture& originTexture, int radius)
+{
+    auto& info = originTexture.getInfo();
+    unsigned char* srcData = info.data;
+    int width = info.width;
+    int height = info.height;
+    int stride = info.stride;
+    return fastMeanFilter(srcData, width, height, stride, radius);
+}
+
 int fastMeanFilter(unsigned char* srcData, int width, int height, int stride, int radius)
 {
-    int ret = 0;
-    if (radius == 0)
-        return ret;
-    if (radius > std::min(width, height) / 2)
-        radius = (std::min(width, height) / 2 - 0.5);
-    unsigned char* dstData = (unsigned char*)malloc(sizeof(unsigned char) * height * stride);
-    int unit = 4, t = 0, t1 = 0;
-    int i, j, k, len = width * height * unit;
-    int block = (radius << 1) + 1;
-    int winSize = block * block;
-    long sumB = 0, sumG = 0, sumR = 0;
-    unsigned char* pSrc = srcData;
-    int* temp = (int*)malloc(sizeof(int) * width * unit);
-    memset(temp, 0, sizeof(int) * width * unit);
-    for (k = -radius; k <= radius; k++)
-    {
-        for (j = 0; j < width; j++)
-        {
-            t = j * unit;
-            t1 = abs(k) * stride;
-            temp[t] += pSrc[t + t1];
-            temp[t + 1] += pSrc[t + 1 + t1];
-            temp[t + 2] += pSrc[t + 2 + t1];
-        }
-    }
-    for (i = 0; i < height; i++)
+  int ret = 0;
+	if(radius == 0)
+		return ret;
+	if(radius > std::min(width,height) / 2)
+		radius = (std::min(width, height) / 2-0.5);
+	unsigned char* dstData = (unsigned char*)malloc(sizeof(unsigned char) * height * stride);
+	memset(dstData, 255, sizeof(unsigned char) * height * stride);
+	int unit = 4, t = 0, t1 = 0;
+	int i,j,k,len = width * height * unit;
+	int block = (radius << 1) + 1;
+	int winSize = block * block;
+	long sumB = 0, sumG = 0,sumR = 0;
+	unsigned char* pSrc = srcData;
+	int* temp = (int*)malloc(sizeof(int)* width * unit);
+	memset(temp,0,sizeof(int) * width * unit);
+	for(k = -radius; k <= radius; k++)
+	{
+		for(j = 0; j< width; j++)
+		{
+			t = j * unit;
+			t1 = abs(k) * stride;
+			temp[t] += pSrc[t + t1];
+			temp[t + 1] += pSrc[t + 1 + t1];
+			temp[t + 2] += pSrc[t + 2 + t1];
+		}
+	}
+	for (i = 0; i < height; i++)
     {
         sumB = sumG = sumR = 0;
         for (j = -radius; j <= radius; j++)
         {
-            t = abs(j) * unit;
-            sumB += temp[t];
-            sumG += temp[t + 1];
-            sumR += temp[t + 2];
+			 t = abs(j) * unit;
+             sumB += temp[t];
+			 sumG += temp[t + 1];
+			 sumR += temp[t + 2];                                       
         }
         for (j = 0; j < width; j++)
         {
-            t = j * unit + i * stride;
-            dstData[t] = (sumB / winSize);
-            dstData[t + 1] = (sumG / winSize);
-            dstData[t + 2] = (sumR / winSize);
-            if (j < width - 1)
-            {
-                t = abs(j - radius) * unit;
-                t1 = (j + radius + 1) % width * unit;
-                sumB = sumB - temp[t] + temp[t1];
-                sumG = sumG - temp[t + 1] + temp[t1 + 1];
-                sumR = sumR - temp[t + 2] + temp[t1 + 2];
-            }
+			 t = j * unit + i * stride;
+             dstData[t] = (sumB / winSize);
+			 dstData[t + 1] = (sumG / winSize);
+			 dstData[t + 2] = (sumR / winSize);
+			 if (j < width - 1)
+			 {
+				 t = abs(j - radius) * unit;
+				 t1 = (j + radius + 1) % width * unit;
+			     sumB = sumB - temp[t] + temp[t1];
+			     sumG = sumG - temp[t + 1] + temp[t1 + 1];
+			     sumR = sumR - temp[t + 2] + temp[t1 + 2];
+			 }                                
         }
         if (i < height - 1)
         {
-            for (k = 0; k < width; k++)
-            {
-                t = k * unit + abs(i - radius) * stride;
-                t1 = k * unit + (i + radius + 1) % height * stride;
-                temp[k * unit] = temp[k * unit] - pSrc[t] + pSrc[t1];
-                temp[k * unit + 1] = temp[k * unit + 1] - pSrc[t + 1] + pSrc[t1 + 1];
-                temp[k * unit + 2] = temp[k * unit + 2] - pSrc[t + 2] + pSrc[t1 + 2];
-            }
+             for (k = 0; k < width; k++)
+			 {
+				 t = k * unit + abs(i - radius) * stride;
+				 t1 = k * unit + (i + radius + 1) % height * stride;
+			     temp[k * unit] = temp[k * unit] - pSrc[t] + pSrc[t1];
+			     temp[k * unit + 1] = temp[k * unit + 1] - pSrc[t + 1] + pSrc[t1 + 1];
+			     temp[k * unit + 2] = temp[k * unit + 2] - pSrc[t + 2] + pSrc[t1 + 2];
+			 }               
         }
     }
-    memcpy(srcData, dstData, sizeof(unsigned char) * height * stride);
-    free(dstData);
-    free(temp);
-    return ret;
+	memcpy(srcData, dstData, sizeof(unsigned char) * height * stride);
+	free(dstData);
+	free(temp);
+	return ret;
 }
 
-int mMeanFilter(unsigned char* srcData, int width, int height, int stride, int radius)
+int meanFilter(unsigned char* srcData, int width, int height, int stride, int radius)
 {
     int ret = 0;
     if (radius == 0)
@@ -113,4 +124,14 @@ int mMeanFilter(unsigned char* srcData, int width, int height, int stride, int r
     }
     free(temp);
     return ret;
+}
+
+int meanFilter(const Texture& originTexture, int radius)
+{
+    auto& info = originTexture.getInfo();
+    unsigned char* srcData = info.data;
+    int width = info.width;
+    int height = info.height;
+    int stride = info.stride;
+    return meanFilter(srcData,  width, height, stride, radius);
 }
