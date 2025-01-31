@@ -11,7 +11,11 @@ int fastGaussFilter(const Texture& originTexture, float r)
     int width = info.width;
     int height = info.height;
     int stride = info.stride;
-    
+    return fastGaussFilter(srcData, width, height, stride, r);
+}
+
+int fastGaussFilter(unsigned char* srcData,int width, int height,int stride,float r)
+{
     int ret = 0;
 	int radius = (int)r;
 	if(r == 0)
