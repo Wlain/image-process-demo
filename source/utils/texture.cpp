@@ -25,7 +25,9 @@ Texture::~Texture()
 
 bool Texture::save(const char* filename)
 {
-    if (!stbi_write_png(filename, m_info.width, m_info.height, 4, m_info.data, m_info.stride))
+    std::string path = SOURCE_DIR;
+    path.append("/result/").append(filename);
+    if (!stbi_write_png(path.c_str(), m_info.width, m_info.height, 4, m_info.data, m_info.stride))
     {
         printf("Failed to write image!\n");
         return false;
