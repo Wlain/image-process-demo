@@ -1,6 +1,7 @@
 # image-process-demo
 
 ## 常用美颜美化算法
+* 基础算法
 * 滤镜算法
   * 3D Lut:filter512
 * 美妆算法
